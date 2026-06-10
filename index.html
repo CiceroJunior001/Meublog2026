@@ -1,271 +1,108 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog do Cinceroooo</title>
-    <style>
-        /* Estiliza o cabeçalho da página */
-        header {
-            background-color: #98FB98;
-            color: #000000;
-            text-align: center;
-            max-width: 3040px;
-            margin: 0 auto;
-            padding: 16px;
-        }
+<!DOCTYPE html> <!-- Define que este documento é do tipo HTML5 -->
+<html lang="pt-br"> <!-- Declara o início do documento HTML e define o idioma principal como Português do Brasil -->
 
-        /* Estiliza a área de conteúdo principal */
-        main {
-            background-color: #D3D3D3;
-            color: #183C63;
-            max-width: 3040px;
-            margin: 0 auto;
-            padding: 20px;
-        }
 
-        /* Estiliza cada bloco de post do blog */
-        article {
-            display: flex;
-            flex-direction: column;
-            background-color: #ffffff;
-            padding: 20px;
-            margin-bottom: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+<head> <!-- Contém metadados, configurações da página e links externos que não aparecem diretamente na tela -->
+<meta charset="UTF-8"> <!-- Define a codificação de caracteres como UTF-8 (permite acentos e caracteres especiais) -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Garante a responsividade, ajustando o layout ao tamanho da tela do dispositivo -->
+<title>Blog do Cinceroooo</title> <!-- Define o título que aparece na aba do navegador -->
+<style> /* Início do bloco de estilização CSS interno */
+/* Estiliza o cabeçalho da página */
+header {
+background-color: #98FB98; /* Define a cor de fundo verde garaio */
+color: #000000; /* Define a cor do texto como preto */
+text-align: center; /* Alinha o texto no centro */
+max-width: 3040px; /* Define a largura máxima de 800 pixels */
+margin: 0 auto; /* Centraliza o cabeçalho horizontalmente na tela */
+padding: 16px; /* Adiciona espaçamento interno de 16 pixels */
+}
 
-        .post-conteudo {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
+/* Estiliza a área de conteúdo principal */
+main {
+background-color: #D3D3D3; /* Define a cor de fundo branca */
+color: #183C63; /* Define a cor do texto como azul */
+max-width: 3040px; /* Define a largura máxima de 3040 pixels */
+margin: 0 auto; /* Centraliza o conteúdo principal horizontalmente */
+padding: 20px; /* Adiciona espaçamento interno de 20 pixels */
+}
+/* Estiliza cada bloco de post do blog */
+article {
+display: flex; /* Define o layout flexbox para alinhar os itens (imagem e texto) lado a lado */
+}
 
-        /* Estiliza as imagens dos artigos */
-        img {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 4px;
-        }
 
-        .artigo-autor {
-            font-weight: bold;
-        }
+/* Estiliza as imagens dos artigos */
+img {
+width: 150px; /* Define a largura fixa de 60 pixels */
+height: 150px; /* Define a altura fixa de 60 pixels */
+}
 
-        /* --- SEÇÃO DE COMENTÁRIOS E COMUNICAÇÃO --- */
-        .secao-comentarios {
-            border-top: 1px solid #ccc;
-            padding-top: 15px;
-            margin-top: 10px;
-        }
 
-        .formulario-comentario {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            max-width: 500px;
-            margin-bottom: 15px;
-        }
-
-        .formulario-comentario input, 
-        .formulario-comentario textarea,
-        .sub-form-resposta input,
-        .sub-form-resposta textarea {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-family: sans-serif;
-        }
-
-        .formulario-comentario textarea {
-            height: 60px;
-            resize: vertical;
-        }
-
-        .btn-comentar, .btn-enviar-resposta {
-            background-color: #183C63;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            align-self: flex-start;
-        }
-
-        .btn-comentar:hover, .btn-enviar-resposta:hover {
-            background-color: #0f2641;
-        }
-
-        .lista-comentarios {
-            list-style-type: none;
-            padding: 0;
-            margin-top: 15px;
-        }
-
-        /* Estilo do bloco do comentário principal */
-        .item-comentario {
-            background-color: #f9f9f9;
-            padding: 12px;
-            margin-bottom: 12px;
-            border-radius: 6px;
-            border-left: 4px solid #183C63;
-        }
-
-        .autor-comentario {
-            font-weight: bold;
-            color: #183C63;
-            font-size: 0.9em;
-            margin-bottom: 4px;
-        }
-
-        .texto-comentario {
-            margin: 5px 0;
-            color: #333;
-        }
-
-        .btn-responder {
-            background: none;
-            border: none;
-            color: #0066cc;
-            cursor: pointer;
-            font-size: 0.85em;
-            padding: 0;
-            text-decoration: underline;
-        }
-
-        /* Container que guarda as respostas de um comentário */
-        .lista-respostas {
-            list-style-type: none;
-            padding-left: 20px;
-            margin-top: 8px;
-            border-left: 2px dashed #ccc;
-        }
-
-        .item-resposta {
-            background-color: #ececec;
-            padding: 8px;
-            margin-top: 6px;
-            border-radius: 4px;
-        }
-
-        /* Mini formulário que aparece ao clicar em 'Responder' */
-        .sub-form-resposta {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-top: 8px;
-            padding: 8px;
-            background: #f0f0f0;
-            border-radius: 4px;
-            max-width: 400px;
-        }
-    </style>
+/* Classe para estilizar o nome do autor do artigo */
+.artigo-autor {
+font-weight: bold; /* Deixa o texto em negrito */
+}
+</style> /* 
 </head>
-<body>
 
-    <header>
-        <h1>O BLOG AURAX CICEROO</h1>
-        <p>Vou mostrar como farmei aura com programação e tecnologia</p>
-    </header>
 
-    <main>
-        <article>
-            <div class="post-conteudo">
-                <img src="caçarola.jpg" alt="Logotipo conceitual de tecnologia e educação.">
-                <div>
-                    <h2>Meu primeiro post aurax six seven</h2>
-                    <p class="artigo-autor">Por: Cícero junior</p>
-                    <p>iiiiiiiiiiiiiiiiiiiiii</p>
-                    <button class="btn-reacao">❤️ <span>0</span></button>
-                    <button class="btn-reacao">👍 <span>0</span></button>
-                </div>
-            </div>
-            
-            <div class="secao-comentarios">
-                <h3>Comunidade / Comentários</h3>
-                <div class="formulario-comentario">
-                    <input type="text" class="nome-usuario" placeholder="Seu nome...">
-                    <textarea class="texto-usuario" placeholder="Participe da conversa..."></textarea>
-                    <button class="btn-comentar">Publicar Comentário</button>
-                </div>
-                <ul class="lista-comentarios"></ul>
-            </div>
-        </article>
+<body> <!-- Início do corpo do documento, onde fica todo o conteúdo visível para o usuário -->
+<header> <!-- Seção do topo da página (cabeçalho) -->
+<h1>O BLOG AURAX CICEROO</h1> <!-- Título principal do blog -->
+<p>Vou mostrar como farmei aura com programação e tecnologia </p> <!-- Descrição do cabeçalho -->
+</header>
+<main> <!-- Área onde ficam os posts principais do blog -->
+<article> <!-- Primeiro artigo do blog -->
+<!-- Tag de imagem com origem (src) e texto descritivo de acessibilidade (alt) -->
+<img src="caçarola.jpg"
+alt="Logotipo conceitual de tecnologia e educação: um livro aberto de onde emerge um cérebro digital brilhante, cercado por ícones de Wi-Fi, circuitos e lâmpada de ideia. Cores em tons de azul e branco.">
+<div> <!-- Divisor ou container para agrupar os textos ao lado da imagem -->
+<h2>Meu primeiro post aurax six seven</h2> <!-- Título do post -->
+<p class="artigo-autor">Por: Cícero junior</p> <!-- Autor com a classe de estilo em negrito -->
+<p>iiiiiiiiiiiiiiiiiiiiii</p> <!-- Conteúdo do post -->
+<button>❤️ <span>0</span></button> <!-- Botão de curtir (coração) com contador interno -->
+<button>👍 <span>0</span></button> <!-- Botão de joinha com contador interno -->
+</div>
+</article>
+<article> <!-- Segundo artigo do blog -->
+<img src="kurapika careca.jpg"
+alt="Logotipo conceitual de tecnologia e educação: um livro aberto de onde emerge um cérebro digital brilhante, cercado por ícones de Wi-Fi, circuitos e lâmpada de ideia. Cores em tons de azul e branco.">
+<div>
+<h2>Meu segundo post mas ainda não fiz nada então esperem </h2>
+<p class="artigo-autor">Por: Eu mesmo, Cincero</p>
+<p>Boas-vindas ao meu novo blog! Aqui vou compartilhar dicas de programação e curiosidades da área de tecnologia.</p>
+<button>❤️ <span>0</span></button>
+<button>👍 <span>0</span></button>
+</div>
+</article>
+</main>
+</body>
 
-        <article>
-            <div class="post-conteudo">
-                <img src="kurapika careca.jpg" alt="Logotipo conceitual de tecnologia e educação.">
-                <div>
-                    <h2>Meu segundo post mas ainda não fiz nada então esperem</h2>
-                    <p class="artigo-autor">Por: Eu mesmo, Cincero</p>
-                    <p>Boas-vindas ao meu novo blog! Aqui vou compartilhar dicas de programação e curiosidades da área de tecnologia.</p>
-                    <button class="btn-reacao">❤️ <span>0</span></button>
-                    <button class="btn-reacao">👍 <span>0</span></button>
-                </div>
-            </div>
 
-            <div class="secao-comentarios">
-                <h3>Comunidade / Comentários</h3>
-                <div class="formulario-comentario">
-                    <input type="text" class="nome-usuario" placeholder="Seu nome...">
-                    <textarea class="texto-usuario" placeholder="Participe da conversa..."></textarea>
-                    <button class="btn-comentar">Publicar Comentário</button>
-                </div>
-                <ul class="lista-comentarios"></ul>
-            </div>
-        </article>
-    </main>
+<script> /* Início do bloco de programação JavaScript */
+// Seleciona todos os elementos <button> da página e os armazena na constante "botoes"
+const botoes = document.querySelectorAll("button");
 
-    <script>
-        // --- LÓGICA DOS BOTÕES DE CURTIR ---
-        const botoesReacao = document.querySelectorAll(".btn-reacao");
-        botoesReacao.forEach(function (botao) {
-            let curtiu = false;
-            botao.addEventListener("click", function() {
-                let texto = botao.querySelector("span");
-                if (!curtiu) {
-                    texto.textContent++;
-                    curtiu = true;
-                } else {
-                    texto.textContent--;
-                    curtiu = false;
-                }
-            });
-        });
 
-        // --- LÓGICA DE COMUNICAÇÃO (COMENTÁRIOS E RESPOSTAS) ---
-        const artigos = document.querySelectorAll("article");
+// Percorre cada botão encontrado na página
+botoes.forEach(function (botao) {
+let curtiu = false; // Cria uma variável de controle para saber se o botão atual está ativo (curtido)
+// Adiciona um ouvinte para o evento de clique, chamando a função "botaoClicado" quando acionado
+botao.addEventListener("click", botaoClicado);
+// Função executada sempre que um botão é clicado
+function botaoClicado() {
+console.log("fui clicado"); // Registra uma mensagem informativa no console do desenvolvedor
+let texto = botao.querySelector("span"); // Seleciona a tag <span> de dentro do botão clicado
+// Verifica o estado atual de curtida
+if (curtiu === false) {
+texto.textContent++; // Incrementa o número no span se ainda não tiver curtido
+curtiu = true; // Altera o estado de controle para true (marcado como curtido)
+} else {
+texto.textContent--; // Decrementa o número no span se o usuário clicar de novo para descurtir
+curtiu = false; // Retorna o estado de controle para false
+}
+}
+})
 
-        artigos.forEach(function (artigo) {
-            const campoNome = artigo.querySelector(".nome-usuario");
-            const campoTexto = artigo.querySelector(".texto-usuario");
-            const botaoComentar = artigo.querySelector(".btn-comentar");
-            const listaComentarios = artigo.querySelector(".lista-comentarios");
 
-            // Evento para criar um comentário principal
-            botaoComentar.addEventListener("click", function () {
-                const nome = campoNome.value.trim();
-                const texto = campoTexto.value.trim();
-
-                if (nome === "" || texto === "") {
-                    alert("Por favor, preencha seu nome e o comentário!");
-                    return;
-                }
-
-                // Cria a estrutura do comentário
-                const novoComentario = document.createElement("li");
-                novoComentario.className = "item-comentario";
-                novoComentario.innerHTML = `
-                    <div class="autor-comentario">👤 ${nome}</div>
-                    <p class="texto-comentario">${texto}</p>
-                    <button class="btn-responder">Responder</button>
-                    <ul class="lista-respostas"></ul>
-                `;
-
-                // Adiciona o comentário na lista do post
-                listaComentarios.appendChild(novoComentario);
-
-                // Limpa os campos de texto do formulário principal
-                campoNome.value = "";
-                campoTexto.value = "";
+</script/>
