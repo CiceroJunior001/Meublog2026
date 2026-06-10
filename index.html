@@ -27,15 +27,16 @@
         /* Estiliza cada bloco de post do blog */
         article {
             display: flex;
-            flex-direction: column; /* Permite que a seção de comentários fique abaixo do conteúdo */
+            flex-direction: column;
             background-color: #ffffff;
-            padding: 15px;
-            margin-bottom: 20px; /* Separa um post do outro */
+            padding: 20px;
+            margin-bottom: 25px;
             border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .post-conteudo {
-            display: flex; /* Mantém a imagem ao lado do texto do post */
+            display: flex;
             gap: 15px;
             margin-bottom: 15px;
         }
@@ -48,39 +49,116 @@
             border-radius: 4px;
         }
 
-        /* Classe para estilizar o nome do autor do artigo */
         .artigo-autor {
             font-weight: bold;
         }
 
-        /* Seção de comentários */
+        /* --- SEÇÃO DE COMENTÁRIOS E COMUNICAÇÃO --- */
         .secao-comentarios {
             border-top: 1px solid #ccc;
             padding-top: 15px;
             margin-top: 10px;
         }
 
-        .secao-comentarios textarea {
-            width: 100%;
+        .formulario-comentario {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
             max-width: 500px;
+            margin-bottom: 15px;
+        }
+
+        .formulario-comentario input, 
+        .formulario-comentario textarea,
+        .sub-form-resposta input,
+        .sub-form-resposta textarea {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: sans-serif;
+        }
+
+        .formulario-comentario textarea {
             height: 60px;
-            margin-bottom: 8px;
-            display: block;
-            padding: 5px;
+            resize: vertical;
+        }
+
+        .btn-comentar, .btn-enviar-resposta {
+            background-color: #183C63;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            align-self: flex-start;
+        }
+
+        .btn-comentar:hover, .btn-enviar-resposta:hover {
+            background-color: #0f2641;
         }
 
         .lista-comentarios {
             list-style-type: none;
             padding: 0;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
-        .lista-comentarios li {
-            background-color: #f0f0f0;
-            padding: 8px;
-            margin-bottom: 5px;
-            border-radius: 4px;
+        /* Estilo do bloco do comentário principal */
+        .item-comentario {
+            background-color: #f9f9f9;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            border-left: 4px solid #183C63;
+        }
+
+        .autor-comentario {
+            font-weight: bold;
+            color: #183C63;
+            font-size: 0.9em;
+            margin-bottom: 4px;
+        }
+
+        .texto-comentario {
+            margin: 5px 0;
             color: #333;
+        }
+
+        .btn-responder {
+            background: none;
+            border: none;
+            color: #0066cc;
+            cursor: pointer;
+            font-size: 0.85em;
+            padding: 0;
+            text-decoration: underline;
+        }
+
+        /* Container que guarda as respostas de um comentário */
+        .lista-respostas {
+            list-style-type: none;
+            padding-left: 20px;
+            margin-top: 8px;
+            border-left: 2px dashed #ccc;
+        }
+
+        .item-resposta {
+            background-color: #ececec;
+            padding: 8px;
+            margin-top: 6px;
+            border-radius: 4px;
+        }
+
+        /* Mini formulário que aparece ao clicar em 'Responder' */
+        .sub-form-resposta {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 8px;
+            padding: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            max-width: 400px;
         }
     </style>
 </head>
@@ -105,9 +183,12 @@
             </div>
             
             <div class="secao-comentarios">
-                <h3>Comentários</h3>
-                <textarea placeholder="Escreva um comentário..."></textarea>
-                <button class="btn-comentar">Enviar Comentário</button>
+                <h3>Comunidade / Comentários</h3>
+                <div class="formulario-comentario">
+                    <input type="text" class="nome-usuario" placeholder="Seu nome...">
+                    <textarea class="texto-usuario" placeholder="Participe da conversa..."></textarea>
+                    <button class="btn-comentar">Publicar Comentário</button>
+                </div>
                 <ul class="lista-comentarios"></ul>
             </div>
         </article>
@@ -125,9 +206,12 @@
             </div>
 
             <div class="secao-comentarios">
-                <h3>Comentários</h3>
-                <textarea placeholder="Escreva um comentário..."></textarea>
-                <button class="btn-comentar">Enviar Comentário</button>
+                <h3>Comunidade / Comentários</h3>
+                <div class="formulario-comentario">
+                    <input type="text" class="nome-usuario" placeholder="Seu nome...">
+                    <textarea class="texto-usuario" placeholder="Participe da conversa..."></textarea>
+                    <button class="btn-comentar">Publicar Comentário</button>
+                </div>
                 <ul class="lista-comentarios"></ul>
             </div>
         </article>
@@ -136,13 +220,11 @@
     <script>
         // --- LÓGICA DOS BOTÕES DE CURTIR ---
         const botoesReacao = document.querySelectorAll(".btn-reacao");
-
         botoesReacao.forEach(function (botao) {
             let curtiu = false;
-            
             botao.addEventListener("click", function() {
                 let texto = botao.querySelector("span");
-                if (curtiu === false) {
+                if (!curtiu) {
                     texto.textContent++;
                     curtiu = true;
                 } else {
@@ -152,34 +234,38 @@
             });
         });
 
-        // --- LÓGICA DA SEÇÃO DE COMENTÁRIOS ---
-        // Seleciona todos os artigos para tratar os comentários de cada um separadamente
+        // --- LÓGICA DE COMUNICAÇÃO (COMENTÁRIOS E RESPOSTAS) ---
         const artigos = document.querySelectorAll("article");
 
         artigos.forEach(function (artigo) {
-            const campoTexto = artigo.querySelector(".secao-comentarios textarea");
+            const campoNome = artigo.querySelector(".nome-usuario");
+            const campoTexto = artigo.querySelector(".texto-usuario");
             const botaoComentar = artigo.querySelector(".btn-comentar");
             const listaComentarios = artigo.querySelector(".lista-comentarios");
 
+            // Evento para criar um comentário principal
             botaoComentar.addEventListener("click", function () {
-                const textoComentario = campoTexto.value.trim();
+                const nome = campoNome.value.trim();
+                const texto = campoTexto.value.trim();
 
-                // Verifica se o usuário não enviou um comentário vazio
-                if (textoComentario !== "") {
-                    // Cria um novo elemento de lista (li)
-                    const novoComentario = document.createElement("li");
-                    novoComentario.textContent = textoComentario;
-
-                    // Adiciona o novo comentário na lista do respectivo post
-                    listaComentarios.appendChild(novoComentario);
-
-                    // Limpa o campo de texto após o envio
-                    campoTexto.value = "";
-                } else {
-                    alert("Por favor, digite um comentário antes de enviar!");
+                if (nome === "" || texto === "") {
+                    alert("Por favor, preencha seu nome e o comentário!");
+                    return;
                 }
-            });
-        });
-    </script>
-</body>
-</html>
+
+                // Cria a estrutura do comentário
+                const novoComentario = document.createElement("li");
+                novoComentario.className = "item-comentario";
+                novoComentario.innerHTML = `
+                    <div class="autor-comentario">👤 ${nome}</div>
+                    <p class="texto-comentario">${texto}</p>
+                    <button class="btn-responder">Responder</button>
+                    <ul class="lista-respostas"></ul>
+                `;
+
+                // Adiciona o comentário na lista do post
+                listaComentarios.appendChild(novoComentario);
+
+                // Limpa os campos de texto do formulário principal
+                campoNome.value = "";
+                campoTexto.value = "";
